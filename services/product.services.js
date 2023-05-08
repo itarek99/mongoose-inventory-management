@@ -16,8 +16,15 @@ const updateSingleProductService = async (productId, updatedData) => {
   const result = await Product.updateOne({ _id: productId }, updatedData, { runValidators: true });
   return result;
 };
-const updateMultipleProductService = async (updatedData) => {
-  const result = await Product.updateMany({ price: { $lte: 1000 } }, updatedData, { runValidators: true });
+const updateMultipleProductService = async (data) => {
+  // const result = await Product.updateMany({ price: { $lte: 1000 } }, updatedData, { runValidators: true });
+
+  const products = [];
+  data.forEach((product) => {
+    products.push(Product.updateOne({ _id: product.id }, product.data));
+  });
+
+  const result = await Promise.all(products);
   return result;
 };
 const deleteSingleProductService = async (productId) => {

@@ -61,7 +61,9 @@ const updateSingleProduct = async (req, res, next) => {
 const updateMultipleProduct = async (req, res, next) => {
   try {
     const updatedData = req.body;
+
     const result = await updateMultipleProductService(updatedData);
+
     res.status(200).json({ status: "success", message: "product successfully updated" });
   } catch (error) {
     res.status(400).json({ status: "failed", message: "failed to update multiple product", error: error.message });
