@@ -12,5 +12,9 @@ const getProductByIdServices = async (id) => {
   const product = await Product.findById(id);
   return product;
 };
+const updateSingleProductService = async (id, updatedData) => {
+  const result = await Product.updateOne({ _id: id }, updatedData);
+  return result;
+};
 
-module.exports = { getProductsService, addProductService, getProductByIdServices };
+module.exports = { getProductsService, addProductService, getProductByIdServices, updateSingleProductService };
