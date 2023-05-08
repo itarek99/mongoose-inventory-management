@@ -31,6 +31,10 @@ const deleteSingleProductService = async (productId) => {
   const result = await Product.deleteOne({ _id: productId });
   return result;
 };
+const deleteMultipleProductService = async (ids) => {
+  const result = await Product.deleteMany({ _id: ids });
+  return result;
+};
 
 module.exports = {
   getProductsService,
@@ -39,4 +43,5 @@ module.exports = {
   updateSingleProductService,
   updateMultipleProductService,
   deleteSingleProductService,
+  deleteMultipleProductService,
 };
