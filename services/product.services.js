@@ -12,9 +12,19 @@ const getProductByIdServices = async (id) => {
   const product = await Product.findById(id);
   return product;
 };
-const updateSingleProductService = async (id, updatedData) => {
-  const result = await Product.updateOne({ _id: id }, updatedData);
+const updateSingleProductService = async (productId, updatedData) => {
+  const result = await Product.updateOne({ _id: productId }, updatedData, { runValidators: true });
+  return result;
+};
+const deleteSingleProductService = async (productId) => {
+  const result = await Product.deleteOne({ _id: productId });
   return result;
 };
 
-module.exports = { getProductsService, addProductService, getProductByIdServices, updateSingleProductService };
+module.exports = {
+  getProductsService,
+  addProductService,
+  getProductByIdServices,
+  updateSingleProductService,
+  deleteSingleProductService,
+};
