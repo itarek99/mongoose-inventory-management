@@ -16,6 +16,10 @@ const updateSingleProductService = async (productId, updatedData) => {
   const result = await Product.updateOne({ _id: productId }, updatedData, { runValidators: true });
   return result;
 };
+const updateMultipleProductService = async (updatedData) => {
+  const result = await Product.updateMany({ price: { $lte: 1000 } }, updatedData, { runValidators: true });
+  return result;
+};
 const deleteSingleProductService = async (productId) => {
   const result = await Product.deleteOne({ _id: productId });
   return result;
@@ -26,5 +30,6 @@ module.exports = {
   addProductService,
   getProductByIdServices,
   updateSingleProductService,
+  updateMultipleProductService,
   deleteSingleProductService,
 };

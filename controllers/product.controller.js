@@ -4,6 +4,7 @@ const {
   getProductByIdServices,
   updateSingleProductService,
   deleteSingleProductService,
+  updateMultipleProductService,
 } = require("../services/product.services");
 
 const createNewProduct = async (req, res, next) => {
@@ -56,18 +57,34 @@ const updateSingleProduct = async (req, res, next) => {
     res.status(400).json({ status: "failed", message: "failed to update product", error: error.message });
   }
 };
+
+const updateMultipleProduct = async (req, res, next) => {
+  try {
+    const updatedData = req.body;
+    const result = await updateMultipleProductService(updatedData);
+    res.status(200).json({ status: "success", message: "product successfully updated" });
+  } catch (error) {
+    res.status(400).json({ status: "failed", message: "failed to update multiple product", error: error.message });
+  }
+};
+
 const deleteSingleProduct = async (req, res, next) => {
   try {
     const { id } = req.params;
     const result = await deleteSingleProductService(id);
-    if (res.deletedCount) {
-      res.status(200).json({ status: "success", message: "product successfully deleted", result });
-    } else {
-      throw new Error("no product found");
-    }
+    if (!res.deletedCount) throw new Error("no product found");
+
+    res.status(200).json({ status: "success", message: "product successfully deleted", result });
   } catch (error) {
     res.status(400).json({ status: "failed", message: "failed to delete product", error: error.message });
   }
 };
 
-module.exports = { createNewProduct, getAllProduct, getSingleProduct, updateSingleProduct, deleteSingleProduct };
+module.exports = {
+  createNewProduct,
+  getAllProduct,
+  getSingleProduct,
+  updateSingleProduct,
+  updateMultipleProduct,
+  deleteSingleProduct,
+};
