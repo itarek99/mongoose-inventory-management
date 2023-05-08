@@ -7,9 +7,14 @@ const app = require("./app");
 
 // database connection
 
-mongoose.connect(process.env.DATABASE_LOCAL).then(() => {
-  console.log("db connection successful");
-});
+mongoose
+  .connect(process.env.DATABASE_LOCAL)
+  .then(() => {
+    console.log("db connection successful");
+  })
+  .catch(() => {
+    console.log("error connecting to database");
+  });
 
 // DBConnect();
 
