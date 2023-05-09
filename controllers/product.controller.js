@@ -42,12 +42,21 @@ const getAllProduct = async (req, res, next) => {
 
     const queries = {};
     if (req.query.sort) {
-      const sortBy = req.query.sort.split(",").join(" ");
-      queries.sortBy = sortBy;
+      queries.sortBy = req.query.sort.split(",").join(" ");
     }
+
     if (req.query.fields) {
-      const fields = req.query.fields.split(",").join(" ");
-      queries.fields = fields;
+      queries.fields = req.query.fields.split(",").join(" ");
+    }
+
+    if (req.query.page || req.query.limit) {
+      const { page = 1, limit = 10 } = req.query;
+      if (+page <= 0) {
+        queries.skip = 0;
+      } else {
+        queries.skip = (page - 1) * limit;
+      }
+      queries.limit = +limit;
     }
 
     const products = await getProductsService(finalFilters, queries);
