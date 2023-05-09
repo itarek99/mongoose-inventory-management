@@ -31,7 +31,26 @@ const getAllProduct = async (req, res, next) => {
   try {
     // const products = await Product.find({ $and: [{ price: { $gte: 1000 } }, { price: { $lte: 1500 } }] });
     // const products = await Product.where("price").gte(700).lte(1400).where("quantity").gte(20);
-    const products = await getProductsService();
+
+    const filters = { ...req.query };
+    const excludeFields = ["sort", "page", "limit", "fields"];
+
+    excludeFields.forEach((field) => delete filters[field]);
+
+    const filtersString = JSON.stringify(filters).replace(/\b(gt|gte|lt|lte)\b/g, (matched) => `$${matched}`);
+    const finalFilters = JSON.parse(filtersString);
+
+    const queries = {};
+    if (req.query.sort) {
+      const sortBy = req.query.sort.split(",").join(" ");
+      queries.sortBy = sortBy;
+    }
+    if (req.query.fields) {
+      const fields = req.query.fields.split(",").join(" ");
+      queries.fields = fields;
+    }
+
+    const products = await getProductsService(finalFilters, queries);
 
     res.status(200).json({ status: "success", data: products });
   } catch (error) {
