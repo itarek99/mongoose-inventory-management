@@ -23,7 +23,7 @@ const productSchema = mongoose.Schema(
       type: String,
       required: true,
       enum: {
-        values: ["kg", "litter", "pcs", "lbs", "bag"],
+        values: ["kg", "liter", "pcs", "lbs", "bag"],
         message: "use a valid unit, kg/litter/pcs/lbs,bag",
       },
     },
@@ -32,21 +32,7 @@ const productSchema = mongoose.Schema(
       {
         type: String,
         required: true,
-        validate: {
-          validator: (value) => {
-            if (!Array.isArray(value)) {
-              return false;
-            }
-            let isValid = true;
-            value.forEach((url) => {
-              if (!validator.isURL(url)) {
-                isValid = false;
-              }
-            });
-            return isValid;
-          },
-          message: "please provide valid image urls",
-        },
+        validate: [validator.isURL, "please provide valid image urls"],
       },
     ],
 
