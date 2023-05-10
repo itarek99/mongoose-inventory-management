@@ -2,9 +2,13 @@ const mongoose = require("mongoose");
 const { ObjectId } = mongoose.Schema.Types;
 const validator = require("validator");
 
-// schema design
-const productSchema = mongoose.Schema(
+const stockSchema = mongoose.Schema(
   {
+    productId: {
+      type: ObjectId,
+      required: true,
+      ref: "Product",
+    },
     name: {
       type: String,
       required: [true, "name is required"],
@@ -50,6 +54,17 @@ const productSchema = mongoose.Schema(
       },
     ],
 
+    price: {
+      type: Number,
+      required: true,
+      min: [0, "product price can't be negative"],
+    },
+    quantity: {
+      type: Number,
+      required: true,
+      min: [0, "product quantity can't be negative"],
+    },
+
     category: {
       type: String,
       required: [true, "please add a category name"],
@@ -67,47 +82,21 @@ const productSchema = mongoose.Schema(
       },
     },
 
-    // supplier: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: "Supplier",
-    // },
-    // categories: [
-    //   {
-    //     name: {
-    //       type: String,
-    //       required: true,
-    //     },
-    //     _id: mongoose.Schema.Types.ObjectId,
-    //   },
-    // ],
+    status: {
+      type: String,
+      require: true,
+      enum: {
+        values: ["in-stock", "out-of-stock", "discontinued"],
+        message: "provide a valid status",
+      },
+      default: "in-stock",
+    },
   },
   {
     timestamps: true,
   }
 );
 
-// mongoose middleware for saving data: pre / post
-productSchema.pre("save", function (next) {
-  // this => current doc
+const Stock = mongoose.model("Stock", stockSchema);
 
-  if (this.quantity === 0) {
-    this.status = "out-of-stock";
-  }
-
-  next();
-});
-
-// productSchema.post("save", function (doc, next) {
-//   console.log("after saving data");
-//   next();
-// });
-
-// methods inside schema
-productSchema.methods.logger = function () {
-  console.log(`${this.name} added`);
-};
-
-// create model SCHEMA => MODEL => QUERY
-const Product = mongoose.model("Product", productSchema);
-
-module.exports = Product;
+module.exports = Stock;
