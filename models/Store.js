@@ -16,7 +16,7 @@ const storeSchema = mongoose.Schema(
     },
     description: String,
     status: {
-      type: string,
+      type: String,
       enum: ["active", "inactive"],
       default: "active",
     },
