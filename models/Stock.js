@@ -91,6 +91,36 @@ const stockSchema = mongoose.Schema(
       },
       default: "in-stock",
     },
+
+    store: {
+      name: {
+        type: String,
+        required: [true, "please provide a store name"],
+        lowercase: true,
+        trim: true,
+        enum: {
+          values: ["barisal", "chittagong", "dhaka", "khulna", "mymensingh", "rajshahi", "rangpur", "sylhet"],
+          message: "please provide a valid name",
+        },
+      },
+      id: {
+        type: ObjectId,
+        required: true,
+        ref: "Store",
+      },
+    },
+    suppliedBy: {
+      name: {
+        type: String,
+        required: [true, "please provide a supplier name"],
+        trim: true,
+      },
+      id: {
+        type: ObjectId,
+        required: true,
+        ref: "Supplier",
+      },
+    },
   },
   {
     timestamps: true,
