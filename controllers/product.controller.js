@@ -121,6 +121,14 @@ const deleteMultipleProduct = async (req, res, next) => {
   }
 };
 
+const fileUpload = async (req, res) => {
+  try {
+    res.status(200).json(req.file);
+  } catch (error) {
+    res.status(400).json({ status: "failed", message: "failed to upload file" });
+  }
+};
+
 module.exports = {
   createNewProduct,
   getAllProduct,
@@ -129,4 +137,5 @@ module.exports = {
   updateMultipleProduct,
   deleteSingleProduct,
   deleteMultipleProduct,
+  fileUpload,
 };

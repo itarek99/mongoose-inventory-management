@@ -7,8 +7,13 @@ const {
   deleteSingleProduct,
   updateMultipleProduct,
   deleteMultipleProduct,
+  fileUpload,
 } = require("../controllers/product.controller");
+const uploader = require("../middleware/uploader");
+
 const router = express.Router();
+
+router.post("/file-upload", uploader.single("productImage"), fileUpload);
 
 router.route("/bulk-update").patch(updateMultipleProduct);
 router.route("/bulk-delete").delete(deleteMultipleProduct);
