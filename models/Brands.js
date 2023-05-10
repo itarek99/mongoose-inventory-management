@@ -20,7 +20,7 @@ const BrandSchema = mongoose.Schema(
     },
     website: {
       type: String,
-      validate: [validator.isUrl, "please provide a valid url"],
+      validate: [validator.isURL, "please provide a valid url"],
       lowercase: true,
     },
     location: String,
