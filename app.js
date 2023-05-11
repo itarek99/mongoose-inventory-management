@@ -6,7 +6,7 @@ const categoryRouter = require("./routes/category.route");
 const storeRouter = require("./routes/store.route");
 
 const app = express();
-
+app.use(express.static("images"));
 app.use(express.json());
 app.use(cors());
 
